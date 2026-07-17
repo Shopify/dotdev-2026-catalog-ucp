@@ -1,0 +1,59 @@
+/* Themed confirm dialog — same scrim/dialog treatment as .pdp-scrim/.pdp (PdpOverlay), sized as a
+   small centered card. z-index sits above .pdp-scrim's 80 in case both could ever stack. */
+.cfm-scrim {
+  display: flex;
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  padding: 24px;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in srgb, var(--fg) 46%, transparent);
+}
+.cfm {
+  width: min(420px, 92vw);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  padding: 20px;
+  animation: tb-pop var(--t-base) var(--ease-out);
+}
+.cfm-title {
+  font-family: var(--disp);
+  font-weight: 600;
+  font-size: 18px;
+  margin: 0 0 8px;
+}
+.cfm-msg {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0 0 20px;
+}
+.cfm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+.cfm-btn {
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--fg);
+  cursor: pointer;
+}
+.cfm-btn.primary {
+  background: var(--structure);
+  border-color: var(--structure);
+  color: #fff;
+}
+.cfm-btn.danger {
+  background: var(--danger);
+  border-color: var(--danger);
+  color: #fff;
+}

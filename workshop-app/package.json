@@ -1,0 +1,15 @@
+{
+  "name": "dotdev-ucp-split-screen-lab",
+  "version": "0.4.0",
+  "private": true,
+  "type": "module",
+  "description": "Local split-screen workshop lab for Shopify Catalog and UCP",
+  "packageManager": "pnpm@10.28.0",
+  "scripts": {
+    "dev": "node server/index.mjs",
+    "reset": "node server/reset.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

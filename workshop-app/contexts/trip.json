@@ -1,0 +1,20 @@
+{
+  "surface": "Trip planner",
+  "destination": "Vancouver Island",
+  "season": "September weekend",
+  "weather": "rain likely",
+  "activities": [
+    "coastal hike",
+    "campfire dinner",
+    "ferry ride"
+  ],
+  "traveler": {
+    "style": "lightweight and practical",
+    "budget": "under $75",
+    "already_owns": [
+      "hiking boots",
+      "day backpack"
+    ]
+  },
+  "starter_intent": "a bright, packable rain jacket for rainy coastal hikes under $75"
+}

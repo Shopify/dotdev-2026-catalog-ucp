@@ -1,0 +1,358 @@
+/* Profile page — travelers + account-wide shopping defaults. Ported from design/profile-mockup.html
+   onto semantic tokens. Edit-in-place is React state now (no drawer, no navigation). */
+
+.profile-page {
+  min-height: 100vh;
+}
+.bg-contours {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.top-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+.profile-page .top h1 {
+  font-family: var(--disp);
+  font-weight: 600;
+  font-size: 19px;
+  margin: 0;
+}
+
+.profile-main {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: clamp(20px, 4vw, 44px) clamp(20px, 5vw, 40px);
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+
+.why {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  background: color-mix(in srgb, var(--agent) 6%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--agent) 35%, var(--border));
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+.why svg {
+  width: 18px;
+  height: 18px;
+  stroke: var(--agent);
+  fill: none;
+  stroke-width: 1.8;
+  flex: 0 0 auto;
+  margin-top: 1px;
+}
+.why p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--fg);
+}
+.why b {
+  color: var(--agent);
+}
+
+/* tabs */
+.tabs {
+  display: flex;
+  gap: 2px;
+  border-bottom: 1px solid var(--border);
+}
+.tab {
+  font-family: var(--body);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--muted);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 9px 15px;
+  margin-bottom: -1px;
+  cursor: pointer;
+  transition:
+    color var(--t-fast) var(--ease-out),
+    border-color var(--t-fast) var(--ease-out);
+}
+.tab:hover {
+  color: var(--fg);
+}
+.tab.is-active {
+  color: var(--structure);
+  border-bottom-color: var(--structure);
+}
+.tabpane {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.subhead {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* traveler card */
+.person {
+  display: flex;
+  gap: 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: var(--shadow);
+}
+.person.you {
+  border-left: 3px solid var(--structure);
+}
+.pfp {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  font-family: var(--mono);
+  font-size: 16px;
+  color: #fff;
+  background: var(--structure);
+}
+.pfp.alt {
+  background: var(--muted);
+}
+.pinfo {
+  flex: 1;
+  min-width: 0;
+}
+.prow {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.pname {
+  font-family: var(--disp);
+  font-weight: 600;
+  font-size: 17px;
+}
+.prole {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1px 8px;
+}
+.pmeta {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--muted);
+  margin-top: 3px;
+}
+.sizes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 11px;
+}
+.size {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--fg);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 4px 9px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.size b {
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.members {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.addmember {
+  border: 1.5px dashed var(--structure);
+  background: transparent;
+  border-radius: var(--radius);
+  color: var(--structure);
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  cursor: pointer;
+  font-family: var(--body);
+  font-weight: 600;
+  font-size: 14px;
+}
+.addmember:hover {
+  background: color-mix(in srgb, var(--structure) 7%, transparent);
+}
+.addmember svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+}
+
+/* edit affordances */
+.pedit {
+  margin-left: auto;
+  align-self: flex-start;
+  font-family: var(--body);
+  font-size: 12.5px;
+  color: var(--structure);
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 11px;
+  cursor: pointer;
+}
+.pedit.save {
+  color: #fff;
+  background: var(--structure);
+  border-color: var(--structure);
+  font-weight: 600;
+}
+.pedit.ghost {
+  color: var(--muted);
+}
+.pedit.danger {
+  color: var(--danger);
+  border-color: color-mix(in srgb, var(--danger) 40%, var(--border));
+}
+.editbar {
+  margin-left: auto;
+  align-self: flex-start;
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.sec-head .editbar {
+  margin-left: 0;
+}
+.person.editing .pfp {
+  outline: 2px dashed color-mix(in srgb, var(--structure) 55%, transparent);
+  outline-offset: 2px;
+}
+
+.ed-input {
+  font: inherit;
+  color: var(--fg);
+  background: var(--bg);
+  border: 1px solid var(--structure);
+  border-radius: 6px;
+  padding: 2px 6px;
+  max-width: 100%;
+}
+.ed-input.role {
+  max-width: 120px;
+}
+.ed-input.num {
+  width: 72px;
+}
+.ed-input:focus {
+  outline: none;
+  border-color: var(--structure);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--structure) 18%, transparent);
+}
+
+/* shopping defaults */
+.sec-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.sec-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.scope-tag {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--agent);
+  background: color-mix(in srgb, var(--agent) 9%, transparent);
+  border: 1px solid color-mix(in srgb, var(--agent) 30%, var(--border));
+  border-radius: 20px;
+  padding: 2px 9px;
+  margin-left: 8px;
+}
+.prefs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(148px, 1fr));
+  gap: 14px 18px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+  box-shadow: var(--shadow);
+}
+.pref {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.pref-k {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.pref-v {
+  font-family: var(--body);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--fg);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.pref-map {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--structure);
+  margin-top: 1px;
+}
+.applies {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+.applies::before {
+  content: '↳ ';
+  color: var(--agent);
+}
+.applies b {
+  color: var(--agent);
+  font-weight: 700;
+}

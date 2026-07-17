@@ -1,0 +1,689 @@
+/* Board workspace — day track + element cards + trip editor. Ported from
+   design/board-mockup.html; consumes only semantic role tokens. */
+
+/* the workspace canvas is a flex column: contours behind, track scrolls within */
+.board-canvas {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.board-canvas .contours path {
+  opacity: 0.45;
+}
+
+/* ── trip editor (header popover) ── */
+.head-chips {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.tripedit {
+  position: relative;
+}
+.tripedit > summary {
+  list-style: none;
+  cursor: pointer;
+}
+.tripedit > summary::-webkit-details-marker {
+  display: none;
+}
+.trip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: 10px;
+  padding: 5px 6px 5px 11px;
+  font-size: 13.5px;
+  color: var(--fg);
+}
+.trip > svg {
+  width: 15px;
+  height: 15px;
+  stroke: var(--structure);
+  fill: none;
+  stroke-width: 1.8;
+  flex: 0 0 auto;
+}
+.trip .t-dot {
+  color: var(--muted);
+}
+.trip .t-dates {
+  font-family: var(--mono);
+  font-size: 12.5px;
+}
+.trip .t-edit {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: 2px;
+  padding: 4px 9px;
+  border-radius: 7px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--muted);
+}
+.trip .t-edit svg {
+  width: 12px;
+  height: 12px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.8;
+}
+.trip:hover,
+.tripedit[open] .trip {
+  border-color: var(--structure);
+}
+.tripedit[open] .t-edit {
+  color: var(--structure);
+  border-color: var(--structure);
+}
+.trippop {
+  position: absolute;
+  left: 0;
+  top: calc(100% + 8px);
+  z-index: 40;
+  width: 328px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.tp-h {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+}
+.tp-h b {
+  font-family: var(--disp);
+  font-weight: 600;
+  font-size: 14px;
+}
+.tp-h .tp-sub {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  color: var(--muted);
+  margin-left: auto;
+}
+.tp-body {
+  padding: 12px 14px;
+  max-height: 54dvh;
+  overflow: auto;
+}
+.tp-lab {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  text-transform: uppercase;
+  display: block;
+  margin: 0 0 7px;
+}
+.tp-lab.mt {
+  margin-top: 15px;
+}
+.trippop .dsearch {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 8px 10px;
+}
+.trippop .dsearch svg {
+  width: 15px;
+  height: 15px;
+  stroke: var(--muted);
+  fill: none;
+  stroke-width: 1.8;
+}
+.trippop .dsearch input {
+  border: 0;
+  background: none;
+  outline: none;
+  font-family: var(--body);
+  font-size: 13px;
+  color: var(--fg);
+  width: 100%;
+}
+.tp-dests {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+.tp-dests .dchip {
+  font-family: var(--body);
+  font-size: 12.5px;
+  color: var(--fg);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+.tp-dests .dchip:hover {
+  border-color: var(--structure);
+}
+.tp-dests .dchip.on {
+  background: var(--structure);
+  color: #fff;
+  border-color: var(--structure);
+}
+.tp-warn {
+  margin: 0 14px 2px;
+  padding: 9px 11px;
+  border-radius: 9px;
+  font-size: 12px;
+  line-height: 1.45;
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+.tp-warn svg {
+  width: 14px;
+  height: 14px;
+  flex: 0 0 14px;
+  margin-top: 1px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+}
+.tp-warn.bad {
+  background: color-mix(in srgb, var(--danger) 12%, transparent);
+  color: var(--danger);
+}
+.tp-warn.ok {
+  background: color-mix(in srgb, var(--agent) 12%, transparent);
+  color: var(--fg);
+}
+.tp-foot {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 14px;
+  border-top: 1px solid var(--border);
+}
+.tp-readout {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+}
+.tp-readout b {
+  color: var(--fg);
+}
+.tp-actions {
+  margin-left: auto;
+  display: flex;
+  gap: 7px;
+}
+.tp-cancel {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--fg);
+  border-radius: 8px;
+  padding: 7px 13px;
+  font-family: var(--body);
+  font-size: 12.5px;
+  cursor: pointer;
+}
+.tp-save {
+  border: 1px solid var(--structure);
+  background: var(--structure);
+  color: #fff;
+  border-radius: 8px;
+  padding: 7px 15px;
+  font-family: var(--body);
+  font-weight: 600;
+  font-size: 12.5px;
+  cursor: pointer;
+}
+.tp-save.danger {
+  border-color: var(--danger);
+  background: var(--danger);
+}
+.tp-save:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+/* ── day track ── */
+.track {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 0 22px 22px;
+  overflow: auto;
+  align-items: flex-start;
+  scrollbar-width: none;
+}
+.track::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+.track > .day,
+.track > .newday {
+  margin-top: 22px;
+}
+.day {
+  flex: 1 1 268px;
+  min-width: 220px;
+  align-self: flex-start;
+  background: color-mix(in srgb, var(--surface) 90%, transparent);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0 12px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.day-head {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  border-top: 2px solid var(--structure);
+  margin: 0 -12px 2px;
+  padding: 11px 12px 9px;
+  background: var(--surface);
+  border-radius: calc(var(--radius) - 1px) calc(var(--radius) - 1px) 0 0;
+  box-shadow: 0 8px 10px -9px rgba(29, 43, 36, 0.4);
+}
+.day-head > div:first-child {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+.day-place {
+  font-family: var(--disp);
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--fg);
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+}
+.day-place:hover {
+  color: var(--structure);
+}
+/* Inline place autocomplete in the day head — a slim field that reuses the shared geo dropdown. */
+.day-place-in {
+  font-family: var(--disp);
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--fg);
+  background: none;
+  border: 0;
+  border-bottom: 1.5px solid var(--structure);
+  padding: 0 0 2px;
+  width: 100%;
+  outline: none;
+}
+.setplace {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--disp);
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--muted);
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+}
+.setplace svg {
+  width: 14px;
+  height: 14px;
+  stroke: var(--structure);
+  fill: none;
+  stroke-width: 1.9;
+}
+.setplace:hover {
+  color: var(--structure);
+}
+.day-r {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  flex: 0 0 auto;
+}
+.day-date {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+/* icon-only trigger; the readout is a hover/focus popover so the header stays compact */
+.day-wx {
+  position: relative;
+  display: inline-flex;
+}
+.wx-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  padding: 0;
+  cursor: pointer;
+}
+.wx-trigger:hover,
+.wx-trigger:focus-visible {
+  border-color: var(--structure);
+}
+.wx-trigger svg {
+  width: 12px;
+  height: 12px;
+  stroke: var(--structure);
+  fill: none;
+  stroke-width: 1.6;
+}
+.wx-pop {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--fg);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 5px 9px;
+  box-shadow: var(--shadow);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-2px);
+  transition: opacity 160ms ease, transform 160ms ease;
+  pointer-events: none;
+}
+.day-wx:hover .wx-pop,
+.day-wx:focus-within .wx-pop {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.wx-pop .wet {
+  color: var(--agent);
+}
+/* prior-year normals (trip beyond the live forecast horizon) — flagged, never faked as a forecast */
+.wx-pop .wx-typical {
+  font-size: 8.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0 4px;
+}
+
+/* ── element cards ── */
+.el {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--structure);
+  border-radius: 9px;
+  padding: 10px 11px;
+  box-shadow: var(--shadow);
+  position: relative;
+}
+.el-head {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 6px;
+}
+.el-head svg {
+  width: 14px;
+  height: 14px;
+  stroke: var(--structure);
+  fill: none;
+  stroke-width: 1.8;
+}
+.el-head .type-label {
+  flex: 1;
+}
+.el-x {
+  border: 0;
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 15px;
+  line-height: 1;
+  padding: 0;
+}
+.el-x:hover {
+  color: var(--danger);
+}
+.el-title {
+  font-family: var(--disp);
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 1.2;
+}
+.el-sub {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 3px;
+}
+.note-text {
+  font-style: italic;
+  font-size: 13px;
+  color: var(--fg);
+  line-height: 1.4;
+}
+/* inline-editable fields inherit the card typography — no boxed input look */
+.el-input {
+  width: 100%;
+  border: 0;
+  background: none;
+  outline: none;
+  padding: 0;
+  resize: none;
+  font: inherit;
+  color: inherit;
+}
+.el-input::placeholder {
+  color: var(--muted);
+  opacity: 0.7;
+}
+.tagrow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.ptag {
+  font-family: var(--body);
+  font-size: 12px;
+  font-weight: 500;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 3px 10px;
+}
+input.ptag {
+  width: auto;
+  min-width: 8ch;
+}
+.imgcard {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 96px;
+  padding: 0;
+  border-radius: 7px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  margin-bottom: 6px;
+  cursor: pointer;
+  background: linear-gradient(
+    160deg,
+    color-mix(in srgb, var(--secondary) 65%, var(--surface)),
+    color-mix(in srgb, var(--structure) 45%, var(--surface))
+  );
+}
+.imgcard:hover {
+  border-color: var(--structure);
+}
+.imgcard .contours {
+  opacity: 0.55;
+}
+.img-preview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.img-add {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--fg);
+}
+.img-add svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ── per-day add menu ── */
+.add-slot {
+  position: relative;
+}
+.add {
+  width: 100%;
+  border: 1.5px dashed var(--border);
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 12px;
+  border-radius: 9px;
+  padding: 9px;
+  cursor: pointer;
+  text-align: center;
+}
+.add:hover {
+  border-color: var(--structure);
+  color: var(--structure);
+}
+.addmenu {
+  position: absolute;
+  z-index: 5;
+  left: 0;
+  right: 0;
+  top: calc(100% + 6px);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+  padding: 6px;
+  display: grid;
+  gap: 2px;
+}
+.addmenu button {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  font-family: var(--body);
+  font-size: 13px;
+  color: var(--fg);
+  padding: 8px 9px;
+  border-radius: 7px;
+  text-align: left;
+}
+.addmenu button:hover {
+  background: var(--bg);
+}
+.addmenu svg {
+  width: 15px;
+  height: 15px;
+  stroke: var(--structure);
+  fill: none;
+  stroke-width: 1.8;
+}
+.addmenu .cap {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  padding: 4px 9px 2px;
+  text-transform: uppercase;
+}
+
+/* ── add-a-day columns ── */
+.newday {
+  flex: 0 0 132px;
+  align-self: stretch;
+  border: 1.5px dashed var(--border);
+  border-radius: var(--radius);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--muted);
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: 12px;
+}
+.newday:hover {
+  border-color: var(--structure);
+  color: var(--structure);
+}
+.newday svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+}
+.newday .nd-sub {
+  font-size: 9.5px;
+  letter-spacing: 0.06em;
+  opacity: 0.7;
+}
+.newday.lead {
+  flex-basis: 104px;
+}

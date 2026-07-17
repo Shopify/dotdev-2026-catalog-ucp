@@ -1,0 +1,174 @@
+/* Trailboards — Layer 3: motion vocabulary (one rhythm shared across every screen) */
+:root {
+  --t-fast: 130ms; /* hover, press, tap feedback */
+  --t-base: 220ms; /* expand / collapse, popover, item entrance */
+  --t-slow: 340ms; /* drawers, full-panel transitions */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1); /* warm, decelerating entrance */
+  --ease-in: cubic-bezier(0.4, 0, 1, 1); /* quick exit */
+  --ease-soft: cubic-bezier(0.4, 0, 0.2, 1); /* neutral both-ways (drawers) */
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.5, 1); /* gentle overshoot — a little life */
+}
+
+/* ── shared motion keyframes (reference from any screen) ── */
+@keyframes tb-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes tb-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes tb-pop {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes tb-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes tb-shimmer {
+  from {
+    background-position: -160% 0;
+  }
+  to {
+    background-position: 260% 0;
+  }
+}
+
+/* entrance helper — new items/columns settle in warmly (stagger via --d) */
+.tb-enter {
+  animation: tb-fade-up var(--t-base) var(--ease-out) both;
+  animation-delay: var(--d, 0ms);
+}
+
+/* ── motion application layer — every page inherits the same rhythm ── */
+/* smooth every hover that shifts color / border / background */
+.chip,
+.trip,
+.viewseg a,
+.dchip,
+.tp-presets button,
+.res,
+.radd,
+.addmenu button,
+.umenu a,
+.cf-btn,
+.newday,
+.add,
+.pick button,
+.ghost-actions button,
+.collapse-btn,
+.dp-nav,
+.el-x,
+.rm,
+.qty button,
+.themes button,
+.dp-grid .d {
+  transition: border-color var(--t-fast) var(--ease-soft),
+    color var(--t-fast) var(--ease-soft),
+    background-color var(--t-fast) var(--ease-soft),
+    box-shadow var(--t-fast) var(--ease-soft),
+    transform var(--t-fast) var(--ease-out);
+}
+/* press feedback — a subtle give on tap */
+.pick button:active,
+.cf-btn:active,
+.ghost-actions button:active,
+.add:active,
+.newday:active,
+.radd:active,
+.collapse-btn:active,
+.qty button:active,
+.chip:active {
+  transform: scale(0.96);
+}
+/* element cards lift on hover — tactile, draggable feel. No transform here: it would
+   promote .el into a new stacking context, trapping its dropdown menus behind sibling cards. */
+.el {
+  transition: box-shadow var(--t-fast) var(--ease-out);
+}
+.el:hover {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06), 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+/* popovers + menus rise from their trigger (spatial continuity) */
+.tripedit[open] .trippop,
+.usermenu[open] .umenu,
+.addmenu,
+.results {
+  animation: tb-pop var(--t-base) var(--ease-out);
+}
+/* provenance + trace rows expand with a soft fade */
+.prov[open] .factors,
+.row[open] .io {
+  animation: tb-fade-up var(--t-base) var(--ease-out);
+}
+/* board columns settle in on load, staggered */
+.track > .day,
+.track > .newday {
+  animation: tb-rise var(--t-slow) var(--ease-out) both;
+}
+.track > *:nth-child(1) {
+  animation-delay: 20ms;
+}
+.track > *:nth-child(2) {
+  animation-delay: 70ms;
+}
+.track > *:nth-child(3) {
+  animation-delay: 120ms;
+}
+.track > *:nth-child(4) {
+  animation-delay: 170ms;
+}
+.track > *:nth-child(5) {
+  animation-delay: 220ms;
+}
+/* cart items cascade in the same rhythm */
+.items > .ci {
+  animation: tb-fade-up var(--t-base) var(--ease-out) both;
+}
+.items > .ci:nth-child(1) {
+  animation-delay: 120ms;
+}
+.items > .ci:nth-child(2) {
+  animation-delay: 180ms;
+}
+.items > .ci:nth-child(3) {
+  animation-delay: 240ms;
+}
+.items > .ci:nth-child(4) {
+  animation-delay: 300ms;
+}
+
+/* one global accessibility guard covers every mockup */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

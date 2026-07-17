@@ -1,0 +1,439 @@
+/* Board workspace shell — shared by the setup screen and the live workspace.
+   Full-height app: fixed header + flex body → canvas (grows) + cart aside. */
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  overflow: hidden;
+}
+.body {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.board-head {
+  position: relative;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 22px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+}
+.board-title {
+  font-family: var(--disp);
+  font-weight: 600;
+  font-size: 20px;
+  margin: 0;
+}
+.board-title input {
+  font: inherit;
+  color: inherit;
+  border: 0;
+  background: none;
+  outline: none;
+  border-bottom: 1px dashed transparent;
+  padding: 0 2px;
+  max-width: 46ch;
+}
+.board-title input:hover {
+  border-bottom-color: var(--border);
+}
+.board-title input:focus {
+  border-bottom-color: var(--structure);
+}
+.head-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+/* Ambient save indicator — a small dot/glyph, no words. idle: faint dot; saving: pulsing dot;
+   saved: settling check; error: alert. The status word lives in title/aria-label for a11y. */
+.save-dot {
+  width: 18px;
+  height: 18px;
+  display: inline-grid;
+  place-items: center;
+  position: relative;
+  flex: 0 0 auto;
+}
+.save-dot::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--muted);
+  opacity: 0.45;
+  transition: opacity var(--t-fast, 0.15s) var(--ease-out, ease);
+}
+.save-dot.saving::before {
+  background: var(--structure);
+  opacity: 1;
+  animation: save-pulse 1s ease-in-out infinite;
+}
+.save-dot.saved::before,
+.save-dot.error::before {
+  display: none;
+}
+.save-dot svg {
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke-width: 2.4;
+}
+.save-dot.saved svg {
+  stroke: var(--structure);
+  animation: save-in 0.28s ease-out;
+}
+.save-dot.error svg {
+  stroke: var(--danger);
+  stroke-width: 2;
+}
+@keyframes save-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes save-in {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .save-dot.saving::before,
+  .save-dot.saved svg {
+    animation: none;
+  }
+}
+
+/* canvas — grows; the map-paper plane where day columns live */
+.canvas {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: auto;
+}
+.canvas .contours path {
+  opacity: 0.4;
+}
+
+/* right rail — recommendations + cart (commerce lands in P6; empty state here).
+   Collapsible (mockup toggle #4): the pure-CSS `:has(#cartCollapse:checked)` from the mockup
+   becomes a React `.collapsed` class here, same visual contract. Collapsed by default. */
+.cart {
+  flex: 0 0 60%;
+  min-width: 480px;
+  min-height: 0;
+  border-left: 1px solid var(--border);
+  background: color-mix(in srgb, var(--agent) 6%, var(--surface));
+  display: flex;
+  flex-direction: column;
+  transition: flex-basis var(--t-base) var(--ease-soft), min-width var(--t-base) var(--ease-soft);
+}
+.cart.collapsed {
+  flex-basis: 52px;
+  min-width: 52px;
+}
+.cart.collapsed .cart-full {
+  display: none;
+}
+.cart-full {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+/* vertical rail shown only when collapsed — click anywhere on it to expand */
+.cart-rail {
+  display: none;
+}
+.cart.collapsed .cart-rail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 0;
+  cursor: pointer;
+  height: 100%;
+}
+.cart-rail .rlabel {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  color: var(--fg);
+  text-transform: uppercase;
+}
+.cart-rail .rcount {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--muted);
+}
+.collapse-btn {
+  margin-left: auto;
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+.collapse-btn svg {
+  width: 15px;
+  height: 15px;
+  stroke: var(--fg);
+  fill: none;
+  stroke-width: 2;
+}
+.cart-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 16px 12px;
+}
+.cart-head h2 {
+  font-family: var(--disp);
+  font-weight: 600;
+  font-size: 18px;
+  margin: 0;
+}
+.cart-head .cnt {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+}
+.empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 24px;
+  text-align: center;
+}
+.empty .ill {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  border: 1.5px dashed var(--border);
+  display: grid;
+  place-items: center;
+}
+.empty .ill svg {
+  width: 34px;
+  height: 34px;
+  stroke: var(--muted);
+  fill: none;
+  stroke-width: 1.4;
+}
+.empty p {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.5;
+  max-width: 30ch;
+  margin: 0;
+}
+
+/* destination autocomplete dropdown (DestinationSearch) — keyless Open-Meteo geocode */
+.dfield {
+  position: relative;
+}
+/* Flattened variant (day head + location card): drop the boxed field, inherit local typography. */
+.df-flat .dsearch {
+  background: none;
+  border: 0;
+  padding: 0;
+  gap: 6px;
+}
+.df-flat .dsearch svg {
+  width: 14px;
+  height: 14px;
+  flex: none;
+  stroke: var(--structure);
+  fill: none;
+  stroke-width: 1.9;
+}
+.df-flat .dsearch input {
+  border: 0;
+  background: none;
+  outline: none;
+  width: 100%;
+  font: inherit;
+  color: inherit;
+}
+.geo-menu {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  right: 0;
+  z-index: 40;
+  margin: 0;
+  padding: 5px;
+  list-style: none;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.14);
+  max-height: 264px;
+  overflow-y: auto;
+}
+.geo-row {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 10px;
+  border-radius: 7px;
+  cursor: pointer;
+}
+.geo-row.on {
+  background: color-mix(in srgb, var(--structure) 12%, transparent);
+}
+.geo-row svg {
+  width: 15px;
+  height: 15px;
+  flex: none;
+  stroke: var(--structure);
+  fill: none;
+  stroke-width: 1.8;
+}
+.geo-name {
+  font-family: var(--body);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--fg);
+}
+.geo-detail {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+/* Board ⇄ Map view segmented toggle */
+.viewseg {
+  display: inline-flex;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  overflow: hidden;
+  background: var(--surface);
+}
+.viewseg button {
+  padding: 6px 13px;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--muted);
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+.viewseg button.on {
+  background: var(--structure);
+  color: #fff;
+}
+
+/* Keyless MapLibre canvas view */
+.mapwrap {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+}
+/* Specificity (not just source order) must beat maplibre-gl.css's `.maplibregl-map { position:
+   relative }`, which it applies directly to this element — otherwise the container collapses to
+   0 height (its only child, the canvas, is absolutely positioned and contributes no height). */
+.mapwrap .mapcanvas {
+  position: absolute;
+  inset: 0;
+}
+.mapcanvas .maplibregl-canvas {
+  outline: none;
+}
+.map-pin {
+  display: grid;
+  place-items: center;
+  font-family: var(--mono);
+  font-weight: 700;
+  color: #fff;
+  cursor: default;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+.map-pin.daypin {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  font-size: 13px;
+  background: var(--structure);
+  border: 2px solid #fff;
+}
+.map-pin.dest {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  transform: rotate(45deg);
+  font-size: 0;
+  background: var(--agent);
+  border: 2px solid #fff;
+}
+.maplegend {
+  position: absolute;
+  left: 16px;
+  bottom: 16px;
+  z-index: 6;
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  backdrop-filter: blur(4px);
+}
+.maplegend .lr {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--fg);
+}
+.maplegend .dot {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--structure);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+}
+.maplegend .dot.dest {
+  border-radius: 5px;
+  background: var(--agent);
+}
+.map-loading {
+  display: grid;
+  place-items: center;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--muted);
+}

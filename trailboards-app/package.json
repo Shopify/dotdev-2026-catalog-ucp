@@ -1,0 +1,35 @@
+{
+  "name": "trailboards",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Trailboards — a visual travel planner whose canvas drives real Shopify commerce",
+  "scripts": {
+    "dev": "concurrently -n vite,server -c green,magenta \"vite\" \"tsx watch server/index.ts\"",
+    "build": "vite build && tsc -p tsconfig.server.json",
+    "start": "node dist/server/index.js",
+    "typecheck": "tsc -p tsconfig.app.json --noEmit && tsc -p tsconfig.server.json --noEmit"
+  },
+  "dependencies": {
+    "@ai-sdk/anthropic": "^3.0.86",
+    "ai": "^6.0.209",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "maplibre-gl": "^5.9.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-router-dom": "^7.9.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.0.1",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@vitejs/plugin-react": "^5.1.0",
+    "concurrently": "^9.2.0",
+    "tsx": "^4.22.4",
+    "typescript": "^6.0.3",
+    "vite": "^7.1.0"
+  }
+}

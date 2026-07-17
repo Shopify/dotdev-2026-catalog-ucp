@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en" data-theme="field">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trailboards</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <!-- Checkout Kit web (alpha): registers <shopify-checkout> for the embedded popup. Loaded by the
+         variable-specifier import in src/commerce/checkout.ts; without this map that import no-ops and
+         checkout falls back to opening the real continue_url in a new tab. -->
+    <script type="importmap">
+      {
+        "imports": {
+          "@shopify/checkout-kit": "https://esm.sh/@shopify/checkout-kit@4.0.0-alpha.2"
+        }
+      }
+    </script>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

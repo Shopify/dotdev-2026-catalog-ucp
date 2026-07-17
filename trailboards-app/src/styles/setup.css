@@ -1,0 +1,243 @@
+/* New-board setup card — centered on the canvas. From board-new-mockup.html. */
+.canvas.setup-canvas {
+  display: grid;
+  place-items: center;
+  padding: 32px;
+}
+.setup {
+  position: relative;
+  z-index: 1;
+  width: min(560px, 100%);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  padding: 26px 28px 24px;
+}
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--agent);
+}
+.setup h2 {
+  font-family: var(--disp);
+  font-weight: 600;
+  font-size: 26px;
+  margin: 6px 0 6px;
+}
+.lede {
+  font-size: 13.5px;
+  color: var(--muted);
+  line-height: 1.5;
+  margin: 0 0 20px;
+  max-width: 44ch;
+}
+.fld {
+  display: block;
+  margin-bottom: 18px;
+}
+.flabel {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: block;
+  margin-bottom: 8px;
+}
+.dsearch {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 11px 13px;
+}
+.dsearch svg {
+  width: 17px;
+  height: 17px;
+  stroke: var(--structure);
+  fill: none;
+  stroke-width: 1.8;
+}
+.dsearch input {
+  border: 0;
+  background: none;
+  outline: none;
+  font-family: var(--body);
+  font-size: 15px;
+  color: var(--fg);
+  width: 100%;
+  font-weight: 600;
+}
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 9px;
+}
+.sug {
+  font-family: var(--body);
+  font-size: 12.5px;
+  color: var(--fg);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 5px 12px;
+  cursor: pointer;
+}
+.sug:hover {
+  border-color: var(--structure);
+  color: var(--structure);
+}
+.sug.on {
+  background: var(--structure);
+  color: #fff;
+  border-color: var(--structure);
+}
+.geo-warn {
+  margin-top: 9px;
+  padding: 9px 11px;
+  border-radius: 9px;
+  font-size: 12px;
+  line-height: 1.45;
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  background: color-mix(in srgb, var(--danger) 12%, transparent);
+  color: var(--danger);
+}
+.geo-warn svg {
+  width: 14px;
+  height: 14px;
+  flex: 0 0 14px;
+  margin-top: 1px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+}
+
+/* inline mini calendar */
+.mini-cal {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  background: var(--bg);
+}
+.mc-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 9px;
+}
+.mc-head .mo {
+  font-family: var(--disp);
+  font-weight: 600;
+  font-size: 14px;
+}
+.mc-nav {
+  width: 24px;
+  height: 24px;
+  border-radius: 7px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+.mc-nav svg {
+  width: 13px;
+  height: 13px;
+  stroke: var(--fg);
+  fill: none;
+  stroke-width: 2;
+}
+.mc-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+.mc-grid .dow {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  color: var(--muted);
+  text-align: center;
+  padding: 1px 0 4px;
+}
+.mc-grid .d {
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--fg);
+  border-radius: 7px;
+  cursor: pointer;
+  border: 0;
+  background: none;
+}
+.mc-grid .d:hover {
+  background: var(--surface);
+}
+.mc-grid .d.mute {
+  color: var(--muted);
+  opacity: 0.4;
+  cursor: default;
+}
+.mc-grid .d.in {
+  background: color-mix(in srgb, var(--structure) 16%, transparent);
+  border-radius: 0;
+}
+.mc-grid .d.start {
+  background: var(--structure);
+  color: #fff;
+  border-radius: 7px 0 0 7px;
+}
+.mc-grid .d.end {
+  background: var(--structure);
+  color: #fff;
+  border-radius: 0 7px 7px 0;
+}
+.mc-grid .d.start.end {
+  border-radius: 7px;
+}
+.mc-foot {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 10px;
+}
+.mc-foot b {
+  color: var(--fg);
+}
+.create {
+  width: 100%;
+  margin-top: 6px;
+  border: 1px solid var(--structure);
+  background: var(--structure);
+  color: #fff;
+  border-radius: 11px;
+  padding: 13px;
+  font-family: var(--body);
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+}
+.create:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.create svg {
+  width: 17px;
+  height: 17px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+}

@@ -1,0 +1,366 @@
+/* Stats for nerds — live agent-call trace drawer (systems own truth).
+   Ported from design/board-mockup.html §nerds onto semantic tokens. The mockup drove open/close
+   with a hidden #nerds:checked toggle; here React owns the state and adds `.open` to `.nerds`.
+   `--t-slow`/`--ease-soft` don't exist in the two-layer token system, so the slide uses a literal
+   0.34s with the shared `--ease-out`. */
+
+.nerds-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--body);
+  font-size: 12.5px;
+  color: var(--fg);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 7px 12px;
+  cursor: pointer;
+}
+.nerds-btn:hover {
+  border-color: var(--structure);
+}
+.nerds-btn.on {
+  background: var(--structure);
+  color: #fff;
+  border-color: var(--structure);
+}
+.nerds-btn .gt {
+  font-weight: 700;
+  opacity: 0.65;
+}
+.nerds-btn.on .gt {
+  opacity: 0.85;
+}
+.nerds-btn .cc {
+  background: var(--structure);
+  color: #fff;
+  border-radius: 9px;
+  font-size: 9.5px;
+  padding: 1px 6px;
+  font-weight: 700;
+}
+.nerds-btn.on .cc {
+  background: rgba(255, 255, 255, 0.28);
+}
+
+.nerds {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 46dvh;
+  z-index: 60;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  box-shadow: 0 -16px 34px -18px rgba(0, 0, 0, 0.55);
+  transform: translateY(101%);
+  transition: transform 0.34s var(--ease-out);
+  display: flex;
+  flex-direction: column;
+}
+.nerds.open {
+  transform: translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .nerds {
+    transition: none;
+  }
+}
+
+.nerds-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+}
+.nerds-top .ttl {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+.nerds-top .live {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--agent);
+}
+.nerds-top .live i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--agent);
+  animation: nerdpulse 1.6s infinite;
+}
+@keyframes nerdpulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.2;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nerds-top .live i {
+    animation: none;
+  }
+}
+.nerds-top .metrics {
+  margin-left: auto;
+  display: flex;
+  gap: 16px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--muted);
+}
+.nerds-top .metrics b {
+  color: var(--fg);
+}
+.nerds-top .close {
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+.nerds-top .close svg {
+  width: 14px;
+  height: 14px;
+  stroke: var(--fg);
+  fill: none;
+  stroke-width: 2;
+}
+
+.nerds-filter {
+  display: flex;
+  gap: 6px;
+  padding: 8px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.nerds-filter button {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 3px 11px;
+  cursor: pointer;
+}
+.nerds-filter button.on {
+  color: var(--fg);
+  border-color: var(--structure);
+  background: var(--surface);
+}
+
+.nerds-log {
+  flex: 1;
+  overflow: auto;
+}
+.nerds-empty {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  padding: 22px 16px;
+}
+.row {
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 45%, transparent);
+}
+.row > summary {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1;
+}
+.row > summary::-webkit-details-marker {
+  display: none;
+}
+.row:hover > summary {
+  background: var(--bg);
+}
+.row .t {
+  color: var(--muted);
+  flex: 0 0 74px;
+}
+.row .m {
+  flex: 0 0 44px;
+  text-align: center;
+  font-size: 9px;
+  font-weight: 700;
+  border: 1px solid;
+  border-radius: 5px;
+  padding: 3px 0;
+}
+.m.post {
+  color: var(--structure);
+  border-color: var(--structure);
+}
+.m.get {
+  color: var(--secondary);
+  border-color: var(--secondary);
+}
+.m.local {
+  color: var(--muted);
+  border-color: var(--muted);
+}
+.row .tg {
+  flex: 0 0 92px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--fg);
+}
+.row .tg i {
+  width: 7px;
+  height: 7px;
+  border-radius: 2px;
+}
+.tg.catalog i {
+  background: var(--structure);
+}
+.tg.ucp i {
+  background: var(--danger);
+}
+.tg.wx i {
+  background: var(--secondary);
+}
+.tg.geo i {
+  background: color-mix(in srgb, var(--secondary) 50%, var(--structure));
+}
+.tg.img i {
+  background: transparent;
+  border: 1.5px solid var(--muted);
+}
+.row .call {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--fg);
+}
+.row .call .tool {
+  color: var(--agent);
+  font-weight: 700;
+}
+.row .dur {
+  color: var(--muted);
+  flex: 0 0 auto;
+}
+.row .st {
+  flex: 0 0 8px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #3f9d5a;
+}
+.row .st.err {
+  background: var(--danger);
+}
+.row .st.local {
+  background: var(--muted);
+}
+.row[open] > summary .caretr {
+  transform: rotate(90deg);
+}
+.row .caretr {
+  flex: 0 0 12px;
+  width: 12px;
+  height: 12px;
+  color: var(--muted);
+  transition: transform var(--t-fast) var(--ease-out);
+}
+
+/* request / response — two labeled panels, devtools-style */
+.io {
+  padding: 2px 16px 15px 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+@media (max-width: 760px) {
+  .io {
+    padding-left: 16px;
+  }
+}
+.io-b {
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  overflow: hidden;
+  background: var(--bg);
+}
+.io-b.req {
+  border-left: 2.5px solid var(--structure);
+}
+.io-b.res {
+  border-left: 2.5px solid var(--agent);
+}
+.io-h {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 6px 11px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+.io-tag {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+.io-b.req .io-tag {
+  color: var(--structure);
+}
+.io-b.res .io-tag {
+  color: var(--agent);
+}
+.io-meta {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+  margin-left: auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 62%;
+}
+.io-b pre {
+  margin: 0;
+  padding: 9px 12px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  line-height: 1.6;
+  color: var(--fg);
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-x: auto;
+}
+.io-b pre .k {
+  color: var(--secondary);
+}
+.io-b pre .s {
+  color: var(--agent);
+}
+.io-b pre .n {
+  color: var(--danger);
+}
+.io-b pre .c {
+  color: var(--muted);
+}

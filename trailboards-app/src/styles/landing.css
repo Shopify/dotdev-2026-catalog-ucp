@@ -1,0 +1,364 @@
+/* Boards landing — grid of board cards + new tile. From boards-mockup.html. */
+.wrap {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+.bg-contours {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  opacity: 0.4;
+  pointer-events: none;
+}
+.landing .brand b {
+  font-size: 26px;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+}
+.landing .brand svg {
+  width: 26px;
+  height: 26px;
+}
+
+.landing main {
+  flex: 1;
+  padding: clamp(20px, 4vw, 48px) clamp(20px, 5vw, 64px);
+  max-width: 1240px;
+  width: 100%;
+  margin: 0 auto;
+}
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin: 0 0 20px;
+}
+.section-head .titles {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+.section-head h2 {
+  font-family: var(--disp);
+  font-weight: 600;
+  font-size: 19px;
+  margin: 0;
+}
+.count {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--muted);
+}
+.select-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.grid {
+  display: grid;
+  gap: 22px;
+  grid-template-columns: repeat(auto-fill, minmax(272px, 1fr));
+}
+
+/* board card */
+.board {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+}
+.board:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 4px 10px rgba(29, 43, 36, 0.1),
+    0 16px 34px rgba(29, 43, 36, 0.12);
+}
+.board.selected {
+  outline: 2px solid var(--structure);
+  outline-offset: -1px;
+}
+.select-check {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border);
+  background: color-mix(in srgb, var(--surface) 85%, transparent);
+  display: grid;
+  place-items: center;
+  z-index: 3;
+}
+.board.selected .select-check {
+  background: var(--structure);
+  border-color: var(--structure);
+}
+.select-check svg {
+  width: 13px;
+  height: 13px;
+  stroke: #fff;
+  fill: none;
+  stroke-width: 2.4;
+}
+.preview {
+  position: relative;
+  height: 158px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+.preview .pin {
+  fill: var(--structure);
+}
+.preview .trail {
+  stroke: var(--agent);
+  stroke-width: 1.6;
+  stroke-dasharray: 4 4;
+  fill: none;
+}
+.preview .path {
+  stroke: var(--structure);
+  stroke-width: 1.6;
+  fill: none;
+  opacity: 0.85;
+}
+.badge-dot {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--agent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--agent) 22%, transparent);
+}
+.board .body {
+  padding: 14px 16px 16px;
+}
+.board h3 {
+  font-family: var(--disp);
+  font-weight: 600;
+  font-size: 17px;
+  margin: 0 0 4px;
+}
+.board .meta {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--muted);
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.board .foot {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border-top: 1px dashed var(--border);
+  padding-top: 10px;
+}
+.badges {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  flex-wrap: wrap;
+}
+.matchbadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--agent);
+}
+.matchbadge svg,
+.cartbadge svg {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.8;
+}
+.matchbadge.none {
+  color: var(--muted);
+}
+.cartbadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--structure);
+  font-weight: 600;
+}
+.needs {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--agent);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.needs::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--agent);
+}
+.edited {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* kebab menu (delete) */
+.kebab {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface) 85%, transparent);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  z-index: 3;
+}
+.kebab svg {
+  width: 15px;
+  height: 15px;
+  stroke: var(--fg);
+  fill: none;
+  stroke-width: 2;
+}
+.kebab-menu {
+  position: absolute;
+  top: 42px;
+  right: 10px;
+  z-index: 5;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+  padding: 5px;
+  display: grid;
+  gap: 1px;
+  min-width: 158px;
+}
+.kebab-menu button {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--body);
+  font-size: 13px;
+  color: var(--fg);
+  padding: 8px 9px;
+  border-radius: 6px;
+  width: 100%;
+}
+.kebab-menu button:hover {
+  background: var(--bg);
+}
+.kebab-menu button.danger {
+  color: var(--danger);
+}
+.kebab-menu svg {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.8;
+}
+
+/* new tile */
+.newtile {
+  border: 1.5px dashed var(--structure);
+  background: transparent;
+  border-radius: var(--radius);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 236px;
+  color: var(--structure);
+  cursor: pointer;
+  transition: background 0.18s ease;
+  text-decoration: none;
+}
+.newtile:hover {
+  background: color-mix(in srgb, var(--structure) 7%, transparent);
+}
+.newtile .plus {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1.5px solid var(--structure);
+  display: grid;
+  place-items: center;
+}
+.newtile .plus svg {
+  width: 22px;
+  height: 22px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+}
+.newtile .lbl {
+  font-family: var(--disp);
+  font-weight: 600;
+  font-size: 16px;
+}
+.newtile .sub {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+}
+/* demo tile — agent-tinted so it reads as "prebuilt", distinct from the blank New tile */
+.newtile.demo {
+  border-color: color-mix(in srgb, var(--agent) 55%, var(--border));
+  color: var(--agent);
+}
+.newtile.demo:hover {
+  background: color-mix(in srgb, var(--agent) 7%, transparent);
+}
+.newtile.demo .plus {
+  border-color: currentColor;
+}
+.newtile.demo .plus svg {
+  fill: currentColor;
+  stroke: none;
+}
+
+/* empty + loading states */
+.landing .empty,
+.landing .loading {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--muted);
+  padding: 40px 0;
+}

@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en" data-theme="field">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Building Shopping into Any Surface with Catalog & UCP</title>
+  <link rel="stylesheet" href="vendor/driver/driver.css" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="app-chrome">
+    <div>
+      <p class="eyebrow">Building Shopping into Any Surface with Catalog &amp; UCP</p>
+      <h1>From Prompt to Purchase</h1>
+    </div>
+    <div class="chrome-actions">
+      <button id="replayTour" class="chrome-tour" type="button" aria-label="Replay the orientation tour" title="Replay the 30-second orientation tour">↺ tour</button>
+      <div id="themeMount" class="theme-mount" aria-label="Theme picker"></div>
+    </div>
+  </header>
+
+  <dialog id="tourIntro" class="tour-intro" aria-labelledby="tourIntroTitle">
+    <p class="eyebrow">welcome · 30-second tour</p>
+    <h2 id="tourIntroTitle">From Prompt to Purchase</h2>
+    <p class="tour-intro-lede">A split-screen UCP lab. You type real commerce CLI commands on the left; the canvas on the right renders what each one does — profile, catalog, cart, checkout.</p>
+    <ul class="tour-intro-points">
+      <li><b>Left</b> — your terminal, where you type UCP commands</li>
+      <li><b>Right</b> — the live commerce canvas</li>
+      <li><b>References</b> — every command in the session, your safety net</li>
+      <li>Tip — type <code>help</code> anytime to list the commands</li>
+    </ul>
+    <div class="tour-intro-actions">
+      <button id="tourIntroSkip" class="tour-intro-skip" type="button">Skip</button>
+      <button id="tourIntroStart" class="tour-intro-start" type="button">Start tour ›</button>
+    </div>
+  </dialog>
+
+  <main class="shell">
+    <section class="terminal-pane">
+      <div class="terminal-window" role="application" aria-label="Local UCP terminal">
+        <div class="terminal-titlebar">
+          <span class="traffic-lights" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span class="terminal-title">workshop-demo — ucp shell</span>
+          <span class="terminal-actions">
+            <button id="referenceButton" class="terminal-action is-reference" type="button" aria-expanded="false" aria-controls="referenceTray" aria-label="Open command reference" title="Every command used in this session — your safety net if you get lost">☰ reference</button>
+            <button id="resetButton" class="terminal-action is-danger" type="button">reset</button>
+          </span>
+        </div>
+
+        <div id="terminal" class="terminal" aria-live="polite"></div>
+
+        <form id="commandForm" class="command-form">
+          <label class="prompt" for="commandInput">workshop-demo %</label>
+          <div class="command-entry">
+            <textarea id="commandInput" rows="1" spellcheck="false" autocomplete="off" autocapitalize="off" aria-label="Terminal command input"></textarea>
+          </div>
+        </form>
+
+        <aside id="referenceTray" class="reference-tray" hidden>
+          <div class="reference-head">
+            <span>UCP reference</span>
+            <button id="referenceClose" class="terminal-action" type="button">close</button>
+          </div>
+          <div id="reference"></div>
+        </aside>
+      </div>
+
+      <p class="hint">Enter runs the command. Shift+Enter keeps typing on the next terminal line. Reset clears generated runs and returns the canvas to zero.</p>
+    </section>
+
+    <section class="canvas-pane" aria-label="Commerce response canvas">
+      <div id="canvas"></div>
+    </section>
+  </main>
+  <script src="vendor/driver/driver.js.iife.js"></script>
+  <script src="vendor/mermaid/mermaid.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

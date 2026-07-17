@@ -1,0 +1,175 @@
+/* Trailboards — shared design tokens (theme-ready: primitives -> semantics) */
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,900&family=Public+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+
+:root {
+  /* Layer 1 — primitives (Field Notebook theme) */
+  --c-paper: #efede4;
+  --c-ink: #1d2b24;
+  --c-moss: #3e5c3a;
+  --c-sage: #9caf88;
+  --c-magenta: #b5327a;
+  --c-stone: #6b7469;
+  --c-card: #fbfaf6;
+  --c-brick: #a6412f;
+  --c-line: #c7cdba; /* faint contour ink */
+
+  /* Layer 2 — semantic roles (components reference ONLY these) */
+  --bg: var(--c-paper);
+  --fg: var(--c-ink);
+  --surface: var(--c-card);
+  --structure: var(--c-moss);
+  --agent: var(--c-magenta);
+  --secondary: var(--c-sage);
+  --muted: var(--c-stone);
+  --border: var(--c-sage);
+  --danger: var(--c-brick);
+  --contour: var(--c-line);
+
+  /* type + effects */
+  --disp: 'Fraunces', Georgia, serif;
+  --body: 'Public Sans', system-ui, sans-serif;
+  --mono: 'Space Mono', ui-monospace, monospace;
+  --shadow: 0 1px 2px rgba(29, 43, 36, 0.06), 0 6px 18px rgba(29, 43, 36, 0.08);
+  --radius: 12px;
+}
+
+/* A whole new theme is ONE block — toggle with <html data-theme="night"> */
+[data-theme='night'] {
+  --c-paper: #12181c;
+  --c-ink: #e8e4d8;
+  --c-moss: #7fa06b;
+  --c-sage: #3a4a3c;
+  --c-magenta: #e85a9b;
+  --c-stone: #8a9490;
+  --c-card: #1a2228;
+  --c-brick: #d46a57;
+  --c-line: #2a3630;
+}
+
+/* Blueprint — cool architectural cyan; agent magenta stays the signature */
+[data-theme='blueprint'] {
+  --c-paper: #eaf0f5;
+  --c-ink: #16283b;
+  --c-moss: #2e6f8e;
+  --c-sage: #aec4d2;
+  --c-magenta: #c43a86;
+  --c-stone: #5e7285;
+  --c-card: #f7fafc;
+  --c-brick: #b4513a;
+  --c-line: #c2d4e0;
+}
+
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+  height: 100%;
+}
+body {
+  font-family: var(--body);
+  color: var(--fg);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+#root {
+  height: 100%;
+}
+.mono {
+  font-family: var(--mono);
+}
+.display {
+  font-family: var(--disp);
+}
+a {
+  color: inherit;
+}
+
+/* shared bits */
+.chip {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--fg);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 5px 11px;
+  cursor: pointer;
+  line-height: 1;
+}
+.chip:hover {
+  border-color: var(--structure);
+  color: var(--structure);
+}
+.type-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.swatch {
+  display: inline-block;
+  width: 11px;
+  height: 11px;
+  border-radius: 3px;
+  background: var(--structure);
+  vertical-align: middle;
+}
+
+/* topographic contour field, reusable */
+.contours {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.contours path {
+  fill: none;
+  stroke: var(--contour);
+}
+
+/* ── shared app logo — identical mark + wordmark on every screen, links home ── */
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  text-decoration: none;
+  color: var(--fg);
+  transition: transform var(--t-fast) var(--ease-out);
+}
+.brand svg {
+  width: 22px;
+  height: 22px;
+  stroke: var(--structure);
+  fill: none;
+  stroke-width: 1.8;
+  flex: 0 0 auto;
+}
+.brand b {
+  font-family: var(--disp);
+  font-weight: 600;
+  font-size: 18px;
+  white-space: nowrap;
+}
+.brand .tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.brand:hover b {
+  color: var(--structure);
+}
+.brand:active {
+  transform: scale(0.97);
+}
+.head-div {
+  width: 1px;
+  height: 22px;
+  background: var(--border);
+  flex: 0 0 auto;
+}
