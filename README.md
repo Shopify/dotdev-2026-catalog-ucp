@@ -1,3 +1,6 @@
+> **This repository is no longer maintained.** It has been archived and receives no updates or
+> security fixes. For current Catalog and UCP guidance, see [shopify.dev/docs/agents](https://shopify.dev/docs/agents).
+
 # Building Shopping into Any Surface with Catalog & UCP
 
 Companion repo for the **DotDev 2026** workshop. Two runnable apps that show the same
